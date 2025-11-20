@@ -160,6 +160,7 @@ public class MeetingServiceImpl implements MeetingService {
     }
 
     @Override
+    @Transactional // Unifica la transacción aquí (Sonar S2229)
     public Meeting joinMeeting(JoinMeetingRequest request, String participantEmail) {
         User participant = userRepository.findByEmail(participantEmail)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -182,7 +183,7 @@ public class MeetingServiceImpl implements MeetingService {
         return attemptJoinMeeting(meeting, participant, participantEmail);
     }
 
-    @Transactional
+    // Sin @Transactional para evitar self-invocation incompatible (Sonar S2229)
     public Meeting attemptJoinMeeting(Meeting meeting, User participant, String participantEmail) {
         try {
             // Double-check if user is already in meeting before adding
@@ -215,7 +216,7 @@ public class MeetingServiceImpl implements MeetingService {
         }
     }
 
-    @Transactional(readOnly = true)
+    // Sin @Transactional para evitar self-invocation incompatible (Sonar S2229); operación sólo lectura
     public Meeting handleRaceCondition(Long meetingId, String participantEmail) {
         // Reload meeting and broadcast event in separate read-only transaction
         Meeting meeting = meetingRepository.findById(meetingId)
