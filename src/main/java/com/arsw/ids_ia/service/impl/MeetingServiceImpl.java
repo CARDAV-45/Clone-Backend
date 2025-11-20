@@ -183,7 +183,7 @@ public class MeetingServiceImpl implements MeetingService {
     }
 
     @Transactional
-    private Meeting attemptJoinMeeting(Meeting meeting, User participant, String participantEmail) {
+    public Meeting attemptJoinMeeting(Meeting meeting, User participant, String participantEmail) {
         try {
             // Double-check if user is already in meeting before adding
             if (meeting.getParticipants().stream().anyMatch(p -> p.getEmail().equals(participantEmail))) {
@@ -216,7 +216,7 @@ public class MeetingServiceImpl implements MeetingService {
     }
 
     @Transactional(readOnly = true)
-    private Meeting handleRaceCondition(Long meetingId, String participantEmail) {
+    public Meeting handleRaceCondition(Long meetingId, String participantEmail) {
         // Reload meeting and broadcast event in separate read-only transaction
         Meeting meeting = meetingRepository.findById(meetingId)
                 .orElseThrow(() -> new RuntimeException("Meeting not found after race condition"));
