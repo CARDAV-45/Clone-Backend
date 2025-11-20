@@ -63,7 +63,8 @@ public class AlertService {
                 Map<String, Object> outer = new HashMap<>();
                 outer.put("type", "alert");
                 outer.put("alert", alertMap);
-                logger.info("Broadcasting alert to websocket sessions: {} sessions present", socketHandler == null ? 0 : "(unknown)");
+                // Dentro de este bloque socketHandler != null, por lo que la rama '== null' es inalcanzable (Sonar S2583)
+                logger.info("Broadcasting alert to websocket sessions: {} sessions present", "(unknown)");
                 socketHandler.broadcastObject(outer);
             } catch (Exception ex) {
                 logger.warn("Failed to broadcast alert via websocket: {}", ex.getMessage());
