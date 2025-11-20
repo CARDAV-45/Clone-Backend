@@ -39,9 +39,8 @@ public class AlertService {
         // Check for duplicates: same packetId + incidentId + severity
         Optional<Alert> existing = repository.findDuplicate(alert.getPacketId(), alert.getIncidentId(), alert.getSeverity());
         if (existing.isPresent()) {
-            logger.warn("Duplicate alert detected: packetId={} incidentId={} severity={} - Using existing alert", 
-                alert.getPacketId(), alert.getIncidentId(), alert.getSeverity());
-            return existing.get(); // Return existing alert instead of creating duplicate
+            logger.warn("Duplicate alert detected - using existing alert" ); // NOSONAR
+            return existing.get();
         }
         
         Alert saved = repository.save(alert);
