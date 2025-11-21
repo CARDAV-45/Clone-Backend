@@ -171,7 +171,7 @@ public class MeetingServiceImpl implements MeetingService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         Meeting meeting = meetingRepository.findByCode(request.getCode())
-                .orElseThrow(() -> new RuntimeException("Meeting not found"));
+                .orElseThrow(() -> new RuntimeException(MSG_MEETING_NOT_FOUND));
 
         // Check if user is already in the meeting using database query
         boolean alreadyJoined = meetingRepository.isUserParticipant(meeting.getId(), participant.getId());
